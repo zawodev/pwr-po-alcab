@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '/fragment/HomeFragment.dart';
+import '/fragment/RegisterFragment.dart';
 
 
 
@@ -16,7 +17,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   int selectedIndex = 0;
 
   List<Widget> tabs = [
-    const HomeFragment(),
+    const RegisterFragment(),
     const HomeFragment(),
     const HomeFragment(),
     const HomeFragment(),

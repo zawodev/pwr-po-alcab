@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '/component/CarRowWidget.dart';
-//import '/screen/DetailScreen.dart';
+import '/screen/DetailScreen.dart';
 import '/utils/DataExamples.dart';
-//import '/utils/Widgets.dart';
+import '/utils/Widgets.dart';
 
 import '/model/CarModel.dart';
 
@@ -128,7 +128,7 @@ class _HomeFragmentState extends State<HomeFragment> {
                   splashColor: Colors.transparent,
                   borderRadius: BorderRadius.circular(10),
                   onTap: () {
-                    //DetailScreen(car: list[index]).launch(context);
+                    DetailScreen(car: list[index]).launch(context);
                   },
                   child: CarRowWidget(name: list[index].name, img: list[index].img, year: list[index].year, price: list[index].price),
                 );
