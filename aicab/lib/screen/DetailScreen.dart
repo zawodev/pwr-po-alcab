@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '/utils/Widgets.dart';
+import 'MapScreen.dart';
 
 
 import '/model/CarModel.dart';
@@ -148,7 +149,16 @@ class DetailScreenState extends State<DetailScreen> {
                 context: context,
                 title: 'Wybierz',
                 onPressed: () {
-                  finish(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MapScreen(
+                        carName: widget.car!.name!,
+                        price: widget.car!.price!,
+                        carImagePath: widget.car!.img!,
+                      ),
+                    ),
+                  );
                 },
               ),
             ),
