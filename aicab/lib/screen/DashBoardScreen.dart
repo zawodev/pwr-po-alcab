@@ -4,8 +4,6 @@ import 'package:nb_utils/nb_utils.dart';
 import '/fragment/HomeFragment.dart';
 import '/fragment/RegisterFragment.dart';
 
-
-
 class DashBoardScreen extends StatefulWidget {
   const DashBoardScreen({super.key});
 
@@ -17,15 +15,12 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   int selectedIndex = 0;
 
   List<Widget> tabs = [
-    const RegisterFragment(),
-    const HomeFragment(),
-    const HomeFragment(),
-    const HomeFragment(),
-    const HomeFragment()
-    //const SearchFragment(),
-    //const CartFragment(),
-    //const HomeFragment(),
-    //const ProfileFragment(),
+    const RegisterFragment(), // PU 1 (zawodev)
+    const HomeFragment(), // PU 2 (zawodev)
+    const HomeFragment(), // support screen (to be implemented)
+    const HomeFragment(), // corporate subscription screen (to be implemented)
+    const HomeFragment(), // vehicle monitoring screen (to be implemented)
+    const HomeFragment(), // jakis inny screen (to be implemented)
   ];
 
   @override
@@ -35,7 +30,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   }
 
   init() async {
-    //
+    // Initialization logic if needed
   }
 
   @override
@@ -48,19 +43,20 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: '', activeIcon: Icon(Icons.home)),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: '', activeIcon: Icon(Icons.search)),
-          BottomNavigationBarItem(icon: Icon(Icons.shopping_cart_outlined), label: '', activeIcon: Icon(Icons.shopping_cart)),
-          BottomNavigationBarItem(icon: Icon(Icons.favorite_border), label: '', activeIcon: Icon(Icons.favorite)),
-          BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: '', activeIcon: Icon(Icons.person)),
+          BottomNavigationBarItem(icon: Icon(Icons.person_add_outlined), label: 'Rejestracja', activeIcon: Icon(Icons.person_add)),
+          BottomNavigationBarItem(icon: Icon(Icons.local_taxi_outlined), label: 'Zamów', activeIcon: Icon(Icons.local_taxi)),
+          BottomNavigationBarItem(icon: Icon(Icons.payment_outlined), label: 'Zapłać', activeIcon: Icon(Icons.payment)),
+          BottomNavigationBarItem(icon: Icon(Icons.support_agent_outlined), label: 'Wsparcie', activeIcon: Icon(Icons.support_agent)),
+          BottomNavigationBarItem(icon: Icon(Icons.subscriptions_outlined), label: 'Subskrypcja', activeIcon: Icon(Icons.subscriptions)),
+          BottomNavigationBarItem(icon: Icon(Icons.car_repair_outlined), label: 'Status', activeIcon: Icon(Icons.car_repair)),
         ],
         currentIndex: selectedIndex,
         unselectedItemColor: const Color(0xff9e9e9e),
         selectedItemColor: context.iconColor,
         iconSize: 24,
         selectedFontSize: 14,
-        showUnselectedLabels: false,
-        showSelectedLabels: false,
+        showUnselectedLabels: true,
+        showSelectedLabels: true,
         unselectedFontSize: 14,
         onTap: (index) {
           selectedIndex = index;

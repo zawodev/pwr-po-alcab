@@ -3,7 +3,8 @@ import 'package:nb_utils/nb_utils.dart';
 import '/main.dart';
 import '/screen/DashBoardScreen.dart';
 import '/utils/Widgets.dart';
-
+import '/utils/DataExamples.dart';
+import '/model/UserModel.dart';
 
 class RegisterFragment extends StatefulWidget {
   const RegisterFragment({super.key});
@@ -12,19 +13,17 @@ class RegisterFragment extends StatefulWidget {
   State<RegisterFragment> createState() => _RegisterFragmentState();
 }
 
-
 class _RegisterFragmentState extends State<RegisterFragment> {
+  final _formKey = GlobalKey<FormState>();
 
-  @override
-  void initState() {
-    super.initState();
-    init();
-  }
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
-
-  Future<void> init() async {
-    
-  }
+  bool acceptTerms = false;
+  List<UserModel> mockEmailDatabase = getUsers();
 
   @override
   Widget build(BuildContext context) {
@@ -32,201 +31,153 @@ class _RegisterFragmentState extends State<RegisterFragment> {
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        title: Text("Rejestracja uzytkownika", style: boldTextStyle()),
-        
-
+        title: Text("Rejestracja użytkownika", style: boldTextStyle()),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            const SizedBox(height: 32),
-            Text(
-              "Register",
-              textAlign: TextAlign.start,
-              overflow: TextOverflow.clip,
-              style: boldTextStyle(size: 18),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              "Create your new account",
-              textAlign: TextAlign.start,
-              overflow: TextOverflow.clip,
-              style: primaryTextStyle(),
-            ),
-            const SizedBox(height: 32),
-            TextField(
-              controller: TextEditingController(),
-              obscureText: false,
-              textAlign: TextAlign.start,
-              maxLines: 1,
-              style: const TextStyle(
-                fontWeight: FontWeight.w400,
-                fontStyle: FontStyle.normal,
-                fontSize: 14,
-              ),
-              decoration: RegisterInputDecoration(
-                context: context,
-                name: 'Imie',
-                icon: Icon(Icons.email, color: Colors.grey.withOpacity(0.4), size: 24),
-              ),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: TextEditingController(),
-              obscureText: false,
-              textAlign: TextAlign.start,
-              maxLines: 1,
-              style: const TextStyle(
-                fontWeight: FontWeight.w400,
-                fontStyle: FontStyle.normal,
-                fontSize: 14,
-              ),
-              decoration: RegisterInputDecoration(
-                context: context,
-                name: 'Nazwisko',
-                icon: Icon(Icons.email, color: Colors.grey.withOpacity(0.4), size: 24),
-              ),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: TextEditingController(),
-              obscureText: false,
-              textAlign: TextAlign.start,
-              maxLines: 1,
-              style: const TextStyle(fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 14),
-              decoration: RegisterInputDecoration(
-                context: context,
-                name: 'Numer telefonu',
-                icon: Icon(Icons.call, color: Colors.grey.withOpacity(0.4), size: 24),
-              ),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: TextEditingController(),
-              obscureText: false,
-              textAlign: TextAlign.start,
-              maxLines: 1,
-              style: const TextStyle(fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 14),
-              decoration: RegisterInputDecoration(
-                context: context,
-                name: 'Email',
-                icon: Icon(Icons.email, color: Colors.grey.withOpacity(0.4), size: 24),
-              ),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: TextEditingController(),
-              obscureText: false,
-              textAlign: TextAlign.start,
-              maxLines: 1,
-              style: const TextStyle(
-                fontWeight: FontWeight.w400,
-                fontStyle: FontStyle.normal,
-                fontSize: 14,
-              ),
-              decoration: RegisterInputDecoration(
-                context: context,
-                name: 'Hasło',
-                icon: Icon(Icons.lock, color: Colors.grey.withOpacity(0.4), size: 24),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Align(
-              alignment: Alignment.centerRight,
-              child: InkWell(
-                onTap: () {
-                  dialog();
-                  //finish(context);
-                  //const DashBoardScreen().launch(context);
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              const SizedBox(height: 32),
+              _buildTextField("Imię", firstNameController, false, Icons.person),
+              const SizedBox(height: 16),
+              _buildTextField("Nazwisko", lastNameController, false, Icons.person_outline),
+              const SizedBox(height: 16),
+              _buildTextField("Adres email", emailController, false, Icons.email),
+              const SizedBox(height: 16),
+              _buildTextField("Numer telefonu", phoneController, false, Icons.phone,
+                  keyboardType: TextInputType.phone),
+              const SizedBox(height: 16),
+              _buildTextField("Hasło", passwordController, true, Icons.lock),
+              const SizedBox(height: 16),
+              CheckboxListTile(
+                title: const Text("Akceptuję regulamin"),
+                value: acceptTerms,
+                onChanged: (bool? value) {
+                  setState(() {
+                    acceptTerms = value ?? false;
+                  });
                 },
-                child: Container(
-                  margin: const EdgeInsets.all(0),
-                  padding: const EdgeInsets.all(0),
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: const Color(0xff010101),
-                    shape: BoxShape.circle,
-                    border: Border.all(color: const Color(0x4df2e4e4), width: 1),
-                  ),
-                  child: const Icon(Icons.arrow_forward, color: Color(0xfffcfdff), size: 24),
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: _registerUser,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(Icons.arrow_forward),
+                    SizedBox(width: 8),
+                    Text("Rejestruj"),
+                  ],
                 ),
               ),
-            ),
-
-            //SEKCJA DO LOGOWANIA
-
-            /*const SizedBox(height: 16),
-            Text(
-              "Already have an account?",
-              textAlign: TextAlign.start,
-              overflow: TextOverflow.clip,
-              style: primaryTextStyle(),
-            ),
-            const SizedBox(height: 8),
-            InkWell(
-              onTap: () {
-                finish(context);
-              },
-              child: Text(
-                "Sign in",
-                textAlign: TextAlign.start,
-                overflow: TextOverflow.clip,
-                style: boldTextStyle(color: Colors.red),
-              ),
-            ),*/
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Future<void> dialog() async {
-    return showDialog(
-      context: context,
-      builder: (_) {
-        return AlertDialog(
-          backgroundColor: Colors.transparent,
-          content: SizedBox(
-            height: 300,
-            width: 300,
-            child: Column(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(4),
-                  width: context.width(),
-                  color: context.cardColor,
-                  child:  Text("Wprowadzono bledne dane",
-                    textAlign: TextAlign.center,
-                    overflow: TextOverflow.clip,
-                    style: boldTextStyle(size: 18),
-                  ),
-                ),
-                Container(
-                  height: 80,
-                  padding: const EdgeInsets.all(16),
-                  width: context.width(),
-                  color: context.cardColor,
-                  child: ChooseCarAppButton(
-                    textColor: Colors.white,
-                    title: 'Popraw',
-                    context: context,
-                    onPressed: () {
-                      finish(context);
-                    },
-                  ),
-                )
-              ],
-            ),
-          ),
-        );
+  Widget _buildTextField(String label, TextEditingController controller, bool obscureText, IconData icon,
+      {TextInputType keyboardType = TextInputType.text}) {
+    return TextFormField(
+      controller: controller,
+      obscureText: obscureText,
+      keyboardType: keyboardType,
+      decoration: InputDecoration(
+        labelText: label,
+        border: OutlineInputBorder(),
+        suffixIcon: Icon(icon, color: Colors.grey.withOpacity(0.7)),
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return "Proszę wprowadzić $label";
+        }
+        if (label == "Numer telefonu" && value.length != 9) {
+          return "Niepoprawny numer telefonu (wymagane 9 cyfr)";
+        }
+        return null;
       },
     );
   }
 
+  void _registerUser() {
+    if (!_formKey.currentState!.validate()) return;
+
+    String email = emailController.text;
+    bool emailExists = mockEmailDatabase.any((user) => user.email == email);
+
+    if (emailExists) {
+      _showErrorDialog("Adres email już istnieje w bazie danych.");
+      return;
+    }
+
+    if (!acceptTerms) {
+      _showErrorDialog("Musisz zaakceptować regulamin.");
+      return;
+    }
+
+    UserModel newUser = UserModel(
+      firstName: firstNameController.text,
+      lastName: lastNameController.text,
+      email: emailController.text,
+      phoneNumber: phoneController.text,
+      password: passwordController.text,
+    );
+
+    mockEmailDatabase.add(newUser);
+
+    _showSuccessDialog();
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text("Błąd"),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text("OK"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showSuccessDialog() {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text("Sukces"),
+        content: const Text("Konto zostało pomyślnie utworzone!"),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              _resetTextFields();
+            },
+            child: const Text("Ok"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _resetTextFields() {
+    firstNameController.clear();
+    lastNameController.clear();
+    emailController.clear();
+    phoneController.clear();
+    passwordController.clear();
+    setState(() {
+      acceptTerms = false;
+    });
+  }
 
 }
