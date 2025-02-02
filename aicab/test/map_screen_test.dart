@@ -1,43 +1,70 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:nb_utils/nb_utils.dart';
 import 'package:aicab/screen/MapScreen.dart';
+import 'package:aicab/utils/DataExamples.dart';
 
 void main() {
-  testWidgets('Sprawdzenie ekranu wyboru trasy', (WidgetTester tester) async {
-    await tester.pumpWidget(const MaterialApp(
-      home: MapScreen(
-        carName: 'Honda Civic',
-        price: 2.5,
-        carImagePath: 'images/car_image.png',
+  Widget createWidgetUnderTest() {
+    return MaterialApp(
+      home: SizedBox(
+        width: 500,
+        height: 800,
+        child: MapScreen(
+          carName: "Test Car",
+          price: 10.0,
+          carImagePath: "images/arial atom 2.jpg",
+        ),
       ),
-    ));
+    );
+  }
 
-    // Sprawdź, czy tytuł aplikacji "Wybór trasy" jest widoczny
-    expect(find.text('Wybór trasy'), findsOneWidget);
+  group('MapScreen Widget Tests', () {
+    testWidgets('Początkowy stan MapScreen', (WidgetTester tester) async {
+      await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pumpAndSettle();
 
-    // Sprawdź, czy mapa została załadowana
-    expect(find.byType(GestureDetector), findsOneWidget);
+      final imageFinder = find.byType(Image);
+      expect(imageFinder, findsWidgets);
 
-    // Sprawdź, czy przyciski "Zatwierdź" i "Powrót" są widoczne
-    expect(find.widgetWithText(ElevatedButton, 'Zatwierdź'), findsOneWidget);
-    expect(find.widgetWithText(ElevatedButton, 'Powrót'), findsOneWidget);
-  });
+      expect(find.textContaining("0.00"), findsOneWidget);
+    });
 
-  testWidgets('Sprawdzenie wyboru trasy', (WidgetTester tester) async {
-    await tester.pumpWidget(const MaterialApp(
-      home: MapScreen(
-        carName: 'Honda Civic',
-        price: 2.5,
-        carImagePath: 'images/car_image.png',
-      ),
-    ));
+    testWidgets('Wybór trasy aktualizuje stan', (WidgetTester tester) async {
+      await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pumpAndSettle();
 
-    // Kliknięcie na mapę w celu wyboru trasy
-    await tester.tap(find.byType(GestureDetector));
-    await tester.pump();
+      final gestureDetectorFinder = find.byKey(const Key('mapGestureDetector'));
+      expect(gestureDetectorFinder, findsOneWidget);
 
-    // Sprawdź, czy obraz mapy się zmienił
-    // Upewnij się, że obsługujesz zmianę obrazu w swoim kodzie logicznym
-    expect(find.text('Cena za przejazd: 0.00 PLN'), findsNothing);
+      final Offset topLeftTap = const Offset(100, 100);
+      await tester.tapAt(topLeftTap);
+      await tester.pumpAndSettle();
+
+      final routes = getAvailableRoutes();
+      final expectedImage = routes[0].routeImage;
+      final expectedPrice = (10.0 * routes[0].distance).toStringAsFixed(2);
+
+      expect(find.byKey(const Key('calculatedPriceText')), findsOneWidget);
+      expect(find.textContaining(expectedPrice), findsOneWidget);
+
+      expect(find.byKey(const Key('mapImage')), findsOneWidget);
+      final Image imageWidget = tester.widget(find.byKey(const Key('mapImage')));
+      expect((imageWidget.image as AssetImage).assetName, equals(expectedImage));
+    });
+
+    testWidgets('Zatwierdzenie trasy bez wyboru wyświetla dialog błędu', (WidgetTester tester) async {
+      await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pumpAndSettle();
+
+      final confirmButton = find.widgetWithText(ElevatedButton, 'Zatwierdź');
+      expect(confirmButton, findsOneWidget);
+      await tester.ensureVisible(confirmButton);
+      await tester.tap(confirmButton);
+      await tester.pumpAndSettle();
+
+      expect(find.textContaining("Nie wybrano żadnej trasy"), findsOneWidget);
+      await tester.pumpAndSettle();
+    });
   });
 }
