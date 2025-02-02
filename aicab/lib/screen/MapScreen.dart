@@ -99,143 +99,154 @@ class _MapScreenState extends State<MapScreen> {
           onPressed: showCancelDialog,
         ),
       ),
-      body: Column(
-        children: [
-          // mapa fragment tutaj
-          AspectRatio(
-            aspectRatio: 4 / 3,
-            child: GestureDetector(
-              onTapDown: (details) {
-                double dx = details.localPosition.dx;
-                double dy = details.localPosition.dy;
-                double width = context.size!.width;
-                double height = width * 3 / 4;
-
-                bool topHalf = dy < height / 2;
-                bool leftHalf = dx < width / 2;
-
-                if (topHalf && leftHalf) {
-                  selectRoute(0);
-                } else if (topHalf && !leftHalf) {
-                  selectRoute(1);
-                } else if (!topHalf && leftHalf) {
-                  selectRoute(2);
-                } else {
-                  _showDialog(
-                    message: "Brak dostępnych tras do tego punktu.",
-                    positiveText: "OK",
-                    negativeText: "Anuluj",
-                  );
-                }
-              },
-              child: Image.asset(
-                currentMapImage,
-                fit: BoxFit.contain,
-                errorBuilder: (context, error, stackTrace) {
-                  debugPrint("Błąd ładowania obrazu: $currentMapImage");
-                  return const Center(
-                    child: Text("Nie znaleziono mapy"),
-                  );
-                },
-              ),
-            ),
+      body: SingleChildScrollView(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minHeight: MediaQuery.of(context).size.height,
           ),
-          // panel z informacjami tutaj
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      // sekcja pojazdu
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Image.asset(
-                            widget.carImagePath,
-                            width: 120,
-                            height: 120,
-                            fit: BoxFit.contain, //żeby się obrazek w pełni wyświetlał
-                          ),
-                          const SizedBox(height: 8),
-                          Text('Model: ${widget.carName}', style: boldTextStyle()),
-                          Text('Rok: 2006', style: secondaryTextStyle()),
-                        ],
-                      ),
-                      const SizedBox(width: 32),
-                      // sekcja trasy
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+          child: IntrinsicHeight(
+            child: Column(
+              children: [
+                // Fragment mapy
+                AspectRatio(
+                  aspectRatio: 4 / 3,
+                  child: GestureDetector(
+                    key: const Key('mapGestureDetector'),
+                    onTapDown: (details) {
+                      double dx = details.localPosition.dx;
+                      double dy = details.localPosition.dy;
+                      double width = context.size!.width;
+                      double height = width * 3 / 4;
+                      bool topHalf = dy < height / 2;
+                      bool leftHalf = dx < width / 2;
+
+                      if (topHalf && leftHalf) {
+                        selectRoute(0);
+                      } else if (topHalf && !leftHalf) {
+                        selectRoute(1);
+                      } else if (!topHalf && leftHalf) {
+                        selectRoute(2);
+                      } else {
+                        _showDialog(
+                          message: "Brak dostępnych tras do tego punktu.",
+                          positiveText: "OK",
+                          negativeText: "Anuluj",
+                        );
+                      }
+                    },
+                    child: Image.asset(
+                      currentMapImage,
+                      key: const Key('mapImage'),
+                      fit: BoxFit.contain,
+                      errorBuilder: (context, error, stackTrace) {
+                        debugPrint("Błąd ładowania obrazu: $currentMapImage");
+                        return const Center(child: Text("Nie znaleziono mapy"));
+                      },
+                    ),
+                  ),
+                ),
+                // Panel z informacjami
+                Expanded(
+                  // Uwaga: Expanded nie działa wewnątrz IntrinsicHeight – zamiast niego
+                  // ustawiamy mainAxisSize: MainAxisSize.min dla tego Column.
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Row(
                           children: [
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: Text(
-                                'Cena za przejazd: ${calculatedPrice.toStringAsFixed(2)} PLN',
-                                style: boldTextStyle(),
-                                textAlign: TextAlign.right,
-                              ),
+                            // Sekcja pojazdu
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Image.asset(
+                                  widget.carImagePath,
+                                  width: 120,
+                                  height: 120,
+                                  fit: BoxFit.contain,
+                                ),
+                                const SizedBox(height: 8),
+                                Text('Model: ${widget.carName}', style: boldTextStyle()),
+                                Text('Rok: 2006', style: secondaryTextStyle()),
+                              ],
                             ),
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: Text(
-                                'Długość trasy: ${selectedRouteIndex >= 0 ? routes[selectedRouteIndex].distance.toStringAsFixed(1) : 'N/A'} km',
-                                style: secondaryTextStyle(),
-                                textAlign: TextAlign.right,
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: Text(
-                                'Czas podróży: ${selectedRouteIndex >= 0 ? routes[selectedRouteIndex].estimatedTime : 'N/A'} min',
-                                style: secondaryTextStyle(),
-                                textAlign: TextAlign.right,
+                            const SizedBox(width: 32),
+                            // Sekcja trasy
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Text(
+                                      'Cena za przejazd: ${calculatedPrice.toStringAsFixed(2)} PLN',
+                                      style: boldTextStyle(),
+                                      textAlign: TextAlign.right,
+                                      key: const Key('calculatedPriceText'),
+                                    ),
+                                  ),
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Text(
+                                      'Długość trasy: ${selectedRouteIndex >= 0 ? routes[selectedRouteIndex].distance.toStringAsFixed(1) : 'N/A'} km',
+                                      style: secondaryTextStyle(),
+                                      textAlign: TextAlign.right,
+                                    ),
+                                  ),
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Text(
+                                      'Czas podróży: ${selectedRouteIndex >= 0 ? routes[selectedRouteIndex].estimatedTime : 'N/A'} min',
+                                      style: secondaryTextStyle(),
+                                      textAlign: TextAlign.right,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: tollRoads,
-                        onChanged: (value) {
-                          setState(() {
-                            tollRoads = value ?? false;
-                          });
-                        },
-                      ),
-                      const Text('Płatne odcinki'),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  // przyciski zatwierdź i powrót
-                  Row(
-                    children: [
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: confirmRoute,
-                          child: const Text('Zatwierdź'),
+                        const SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Checkbox(
+                              value: tollRoads,
+                              onChanged: (value) {
+                                setState(() {
+                                  tollRoads = value ?? false;
+                                });
+                              },
+                            ),
+                            const Text('Płatne odcinki'),
+                          ],
                         ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: showCancelDialog,
-                          child: const Text('Powrót'),
+                        const SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: confirmRoute,
+                                child: const Text('Zatwierdź'),
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: showCancelDialog,
+                                child: const Text('Powrót'),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }
