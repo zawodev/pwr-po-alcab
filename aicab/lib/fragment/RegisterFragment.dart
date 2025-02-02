@@ -6,6 +6,10 @@ import '/utils/Widgets.dart';
 import '/utils/DataExamples.dart';
 import '/model/UserModel.dart';
 
+bool validatePhoneNumber(String phone) {
+  return phone.length == 9;
+}
+
 class RegisterFragment extends StatefulWidget {
   const RegisterFragment({super.key});
 
@@ -97,7 +101,7 @@ class _RegisterFragmentState extends State<RegisterFragment> {
         if (value == null || value.isEmpty) {
           return "Proszę wprowadzić $label";
         }
-        if (label == "Numer telefonu" && value.length != 9) {
+        if (label == "Numer telefonu" && validatePhoneNumber(value) == false) {
           return "Niepoprawny numer telefonu (wymagane 9 cyfr)";
         }
         return null;

@@ -3,6 +3,10 @@ import 'package:nb_utils/nb_utils.dart';
 import '/utils/DataExamples.dart';
 import '/model/RouteModel.dart';
 
+double calculatePrice(double basePrice, double distance) {
+  return basePrice * distance;
+}
+
 class MapScreen extends StatefulWidget {
   final String carName;
   final double price;
@@ -38,7 +42,8 @@ class _MapScreenState extends State<MapScreen> {
       } else {
         selectedRouteIndex = index;
         currentMapImage = routes[index].routeImage;
-        calculatedPrice = widget.price * routes[index].distance;
+        //calculatedPrice = widget.price * routes[index].distance;
+        calculatedPrice = calculatePrice(widget.price, routes[index].distance);
       }
     });
   }
@@ -147,8 +152,6 @@ class _MapScreenState extends State<MapScreen> {
                 ),
                 // Panel z informacjami
                 Expanded(
-                  // Uwaga: Expanded nie działa wewnątrz IntrinsicHeight – zamiast niego
-                  // ustawiamy mainAxisSize: MainAxisSize.min dla tego Column.
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(

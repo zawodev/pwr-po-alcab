@@ -101,4 +101,22 @@ void main() {
       expect(find.widgetWithText(TextFormField, testEmail), findsNothing);
     });
   });
+
+  group('RegisterFragment Unit Tests', () {
+    test('validatePhoneNumber zwraca true dla poprawnego numeru telefonu (9 cyfr)', () {
+      const String validPhoneNumber = "123456789";
+
+      final bool isValid = validatePhoneNumber(validPhoneNumber);
+
+      expect(isValid, isTrue);
+    });
+
+    test('validatePhoneNumber zwraca false dla numeru telefonu o długości innej niż 9 cyfr', () {
+      const String invalidPhoneNumber1 = "12345";
+      const String invalidPhoneNumber2 = "1234567890";
+
+      expect(validatePhoneNumber(invalidPhoneNumber1), isFalse);
+      expect(validatePhoneNumber(invalidPhoneNumber2), isFalse);
+    });
+  });
 }

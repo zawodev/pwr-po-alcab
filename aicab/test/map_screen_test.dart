@@ -53,7 +53,7 @@ void main() {
       expect((imageWidget.image as AssetImage).assetName, equals(expectedImage));
     });
 
-    testWidgets('Zatwierdzenie trasy bez wyboru wyświetla dialog błędu', (WidgetTester tester) async {
+    testWidgets('Zatwierdzenie bez wybranej trasy wyświetla dialog błędu', (WidgetTester tester) async {
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.pumpAndSettle();
 
@@ -65,6 +65,17 @@ void main() {
 
       expect(find.textContaining("Nie wybrano żadnej trasy"), findsOneWidget);
       await tester.pumpAndSettle();
+    });
+  });
+
+  group('MapScreen Unit Tests', () {
+    test('calculatePrice zwraca poprawną wartość na podstawie ceny bazowej i dystansu', () {
+      const double basePrice = 10.0;
+      const double distance = 5.5;
+
+      final double result = calculatePrice(basePrice, distance);
+
+      expect(result, equals(55.0));
     });
   });
 }
