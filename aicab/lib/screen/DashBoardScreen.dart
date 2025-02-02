@@ -3,6 +3,10 @@ import 'package:nb_utils/nb_utils.dart';
 
 import '/fragment/HomeFragment.dart';
 import '/fragment/RegisterFragment.dart';
+import '/fragment/PaymentFragment.dart';
+import '/fragment/SupportFragment.dart';
+import '/fragment/SubFragment.dart';
+import '/fragment/ManageFragment.dart';
 
 class DashBoardScreen extends StatefulWidget {
   const DashBoardScreen({super.key});
@@ -17,10 +21,10 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   List<Widget> tabs = [
     const RegisterFragment(), // PU 1 (zawodev)
     const HomeFragment(), // PU 2 (zawodev)
-    const HomeFragment(), // support screen (to be implemented)
-    const HomeFragment(), // corporate subscription screen (to be implemented)
-    const HomeFragment(), // vehicle monitoring screen (to be implemented)
-    const HomeFragment(), // jakis inny screen (to be implemented)
+    const PaymentFragment(), // PU 3 (Kacper)
+    const SupportFragment(), // PU 4 (Kacper)
+    const SubFragment(), // PU 5 (Bartek)
+    const ManageFragment(), // PU 6 (Bartek)
   ];
 
   @override
