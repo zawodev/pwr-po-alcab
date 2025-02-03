@@ -48,6 +48,41 @@ void main() {
 
       expect(isValid, isFalse);
     });
+
+    test('validateCardNumber zwraca true dla poprawnego numeru karty kredytowej', () {
+      const String validCardNumber = "1234123412341234";
+
+      final bool isValid = validateCardNumber(validCardNumber);
+
+      expect(isValid, isTrue);
+    });
+
+    test('validateCardNumber zwraca true dla niepoprawnego numeru karty kredytowej', () {
+      const String invalidCardNumber = "123";
+
+      final bool isValid = validateCardNumber(invalidCardNumber);
+
+      expect(isValid, isFalse);
+    });
+
+
+    test('validateCardExpiryDate zwraca true dla poprawnej daty', () {
+      const String validDate = "07/25";
+
+      final bool isValid = validateCardExpiryDate(validDate);
+
+      expect(isValid, isTrue);
+    });
+
+    test('validateCardExpiryDate zwraca true dla niepoprawnej daty', () {
+      const String invalidDate = "0828";
+
+      final bool isValid = validateCardExpiryDate(invalidDate);
+
+      expect(isValid, isFalse);
+    });
+
+
   });
 
 }

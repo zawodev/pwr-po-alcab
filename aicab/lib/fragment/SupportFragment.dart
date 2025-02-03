@@ -7,6 +7,13 @@ import '/utils/DataExamples.dart';
 import '/model/UserModel.dart';
 import '/model/ReportModel.dart';
 
+bool validateCategory(String category) {
+  return ['Inne', 'Problemy techniczne'].contains(category);
+}
+bool validateOrder(String order) {
+  return ['Przejazd #12345', 'Przejazd #6789'].contains(order);
+}
+
 class SupportFragment extends StatefulWidget {
   const SupportFragment({super.key});
 

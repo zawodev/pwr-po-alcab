@@ -41,9 +41,6 @@ class CarRowWidget extends StatelessWidget {
             width: context.width() - 32,
             child: Text(name!, maxLines: 2, style: boldTextStyle(size: 14)),
           ),
-          //const SizedBox(height: 4),
-          //Text(includedAlcohols!.join(', '), style: secondaryTextStyle(size: 12)),
-          //Text(category!, style: secondaryTextStyle(size: 12)),
         ],
       ),
     );

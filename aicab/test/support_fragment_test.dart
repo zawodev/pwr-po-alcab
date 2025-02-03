@@ -81,5 +81,39 @@ void main() {
     });
   });
 
-  
+  group('SupportFragment Unit Tests', () {
+    test('validateCategory zwraca true dla poprawnej kategorii', () {
+      String category = "Inne";
+
+      final bool isValid = validateCategory(category);
+
+      expect(isValid, isTrue);
+    });
+
+    test('validateCategory zwraca true dla niepoprawnej kategorii', () {
+      String category = "Losowa kategoria";
+
+      final bool isValid = validateCategory(category);
+
+      expect(isValid, isFalse);
+    });
+
+    test('validateOrder zwraca true dla poprawnej kategorii', () {
+      String order = "Przejazd #12345";
+
+      final bool isValid = validateOrder(order);
+
+      expect(isValid, isTrue);
+    });
+
+    test('validateOrder zwraca true dla niepoprawnej kategorii', () {
+      String order = "Przejazd #11111";
+
+      final bool isValid = validateOrder(order);
+
+      expect(isValid, isFalse);
+    });
+
+  });
+
 }

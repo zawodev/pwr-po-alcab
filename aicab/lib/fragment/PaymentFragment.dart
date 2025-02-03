@@ -4,6 +4,12 @@ import 'package:nb_utils/nb_utils.dart';
 bool validateEmail(String email) {
   return email.contains('@');
 }
+bool validateCardNumber(String cardNumber) {
+  return cardNumber.length == 16;
+}
+bool validateCardExpiryDate(String cardExpiryDate) {
+  return cardExpiryDate.contains('/');
+}
 
 class PaymentFragment extends StatefulWidget {
   const PaymentFragment({super.key});
