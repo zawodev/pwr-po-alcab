@@ -1,0 +1,10 @@
+appId: com.example.aicab
+---
+- launchApp
+
+- tapOn: "Status\nTab 6 of 6"
+- tapOn: "1.37\nToyota Corolla"
+- tapOn:
+    point: "75%,55%"
+- tapOn: "OK"
+

@@ -24,19 +24,19 @@ class _SupportFragmentState extends State<SupportFragment> {
   String? _selectedOrder;
   
   final List<String> categories = [
-    "Payment Issue",
-    "Order Not Received",
-    "Wrong Item",
-    "Technical Issue",
-    "Other"
+    "Problem z płatnością",
+    "Nie mam przejazdu",
+    "Zły wybór przejazdu",
+    "Problemy techniczne",
+    "Inne"
   ];
 
   final List<String> pastOrders = [
-    "Order #12345",
-    "Order #67890",
-    "Order #11223",
-    "Order #44556",
-    "Order #78901"
+    "Przejazd #12345",
+    "Przejazd #67890",
+    "Przejazd #11223",
+    "Przejazd #44556",
+    "Przejazd #78901"
   ];
 
   List<UserModel> mockEmailDatabase = getUsers();

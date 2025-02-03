@@ -1,0 +1,10 @@
+appId: com.example.aicab
+---
+- launchApp
+
+- tapOn: "Zapłać\nTab 3 of 6"
+- tapOn: "PayPal"
+- tapOn: "PayPal Email"
+- inputText: "jankowalski@gmail.com"
+- tapOn: "Zapłać PayPalem"
+- tapOn: "Ok"

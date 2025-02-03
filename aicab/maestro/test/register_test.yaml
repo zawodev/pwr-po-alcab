@@ -1,0 +1,17 @@
+appId: com.example.aicab
+---
+- launchApp
+
+- tapOn: "Imię"
+- inputText: "Jan"
+- tapOn: "Nazwisko"
+- inputText: "Kowalski"
+- tapOn: "Adres email"
+- inputText: "kowalskijan@gmail.com"
+- tapOn: "Numer telefonu"
+- inputText: 123123123
+- tapOn: "Hasło"
+- inputText: "qwerty"
+- tapOn: "Akceptuję regulamin"
+- tapOn: "Rejestruj"
+- tapOn: "Ok"

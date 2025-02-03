@@ -1,0 +1,15 @@
+appId: com.example.aicab
+---
+- launchApp
+
+- tapOn: "Wsparcie\nTab 4 of 6"
+- tapOn: "Kategoria"
+- tapOn: "Problemy techniczne"
+- tapOn: "Przejazd"
+- tapOn: "Przejazd #78901"
+- tapOn: "Adres email"
+- inputText: "jankowalski@gmail.com"
+- tapOn: "Opis problemu"
+- inputText: "Mam problem"
+- tapOn: "Wyślij"
+- tapOn: "Wróc do ekranu głównego"

@@ -11,7 +11,9 @@ import '/utils/Widgets.dart';
 import '/model/CarModel.dart';
 
 
-
+bool isCarAvailable(CarModel car) {
+  return car.inUse;
+}
 
 
 class ManageFragment extends StatefulWidget {

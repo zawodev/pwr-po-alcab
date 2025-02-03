@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+bool validateEmail(String email) {
+  return email.contains('@');
+}
 
 class PaymentFragment extends StatefulWidget {
   const PaymentFragment({super.key});
@@ -68,6 +71,8 @@ class _PaymentFragmentState extends State<PaymentFragment> {
         return Container();
     }
   }
+
+
 }
 
 class PaymentOption extends StatelessWidget {
@@ -96,7 +101,7 @@ class PayPalForm extends StatelessWidget {
       children: [
         TextField(decoration: InputDecoration(labelText: "PayPal Email")),
         SizedBox(height: 16),
-        ElevatedButton(onPressed: () {}, child: Text("Zapłać PayPalem")),
+        ElevatedButton(onPressed: () => _showSuccessDialog(context), child: Text("Zapłać PayPalem")),
       ],
     );
   }
@@ -110,7 +115,7 @@ class BlikForm extends StatelessWidget {
       children: [
         TextField(decoration: InputDecoration(labelText: "Wpisz kod BLIK")),
         SizedBox(height: 16),
-        ElevatedButton(onPressed: () {}, child: Text("Potwierdź płatność")),
+        ElevatedButton(onPressed: () => _showSuccessDialog(context), child: Text("Potwierdź płatność")),
       ],
     );
   }
@@ -126,8 +131,27 @@ class CardForm extends StatelessWidget {
         TextField(decoration: InputDecoration(labelText: "Data ważności")),
         TextField(decoration: InputDecoration(labelText: "CVV")),
         SizedBox(height: 16),
-        ElevatedButton(onPressed: () {}, child: Text("Zapłać kartą")),
+        ElevatedButton(onPressed: () => _showSuccessDialog(context), child: Text("Zapłać kartą")),
       ],
     );
   }
 }
+
+void _showSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text("Sukces"),
+        content: const Text("Udało się zapłacić!"),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text("Ok"),
+          ),
+        ],
+      ),
+    );
+  }
+

@@ -7,6 +7,14 @@ import '/utils/DataExamples.dart';
 import '/model/UserModel.dart';
 import '/model/SubscriberModel.dart';
 
+bool validatePhoneNumber(String phone) {
+  return phone.length == 9;
+}
+
+bool validateNipNumber(String nip) {
+  return nip.length == 11;
+}
+
 class SubFragment extends StatefulWidget {
   const SubFragment({super.key});
 
@@ -28,6 +36,8 @@ class _SubFragmentState extends State<SubFragment> {
   bool isSubscribed = false;
   bool acceptTerms = false;
   List<UserModel> mockEmailDatabase = getUsers();
+
+  
 
   @override
   Widget build(BuildContext context) {

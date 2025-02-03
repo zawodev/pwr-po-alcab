@@ -1,0 +1,11 @@
+appId: com.example.aicab
+---
+- launchApp
+
+- tapOn: "Zamów\nTab 2 of 6"
+- tapOn: "3.25\nChevrolet Corvette"
+- tapOn: "Wybierz"
+- tapOn:
+    point: "40%,26%"
+- tapOn: "Zatwierdź"
+- tapOn: "Tak"
